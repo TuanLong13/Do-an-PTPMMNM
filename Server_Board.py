@@ -23,13 +23,8 @@ class Server_Board:
         self.PLAYER = 1
         self.turn = True
 
-        HOST = "127.0.0.1"
-        PORT = 65432
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.bind((HOST, PORT))
-        self.sock.listen(1)
         self.conn, self.addr = (0, 0)
-        self.create_thread(self.waiting_connection)
 
     def drawRect(self, surface, pos, height, boardSize):
         """Vẽ đường viền cho board"""
@@ -124,8 +119,18 @@ class Server_Board:
         thread.daemon = True
         thread.start()
     def waiting_connection(self):
-        self.conn, self.addr = self.sock.accept()
-        self.receive_data()
+        HOST = "127.0.0.1"
+        PORT = 65432
+        while True:
+            try:
+                self.sock.bind((HOST, PORT))
+                self.sock.listen(1)
+                print("AAAAA")
+                self.conn, self.addr = self.sock.accept()
+                self.create_thread(self.receive_data)
+                return True
+            except Exception as e:
+                pass
 
     def receive_data(self):
         while True:

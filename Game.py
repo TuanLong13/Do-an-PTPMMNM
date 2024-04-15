@@ -6,6 +6,7 @@ from const import *
 from Server_Board import *
 from Client_Board import *
 from TextButton import *
+from PlayerTag import *
 
 
 class Game:
@@ -143,7 +144,9 @@ class Game:
     def playScreen(self):
         """Màn hình chơi"""
         play = True
-        pause = TextButton(self.screen, "||", (W/12, H/15), 40, WHITE)
+        connect = False
+        red = PlayerTag(self.screen, "RED TURN", (W/15, H/15), 30, RED)
+        blue = PlayerTag(self.screen, "BLUE TURN", (W - W/8, H/15), 30, BLUE)
         while play:
             self.clock.tick(FPS)
             self.screen.fill(WHITE)
@@ -154,12 +157,14 @@ class Game:
                     sys.exit()    
                 if event.type == pg.MOUSEBUTTONDOWN:
                     self.board.capture(self.clickSound)
-                    if pause.click():
-                        pg.mixer.Sound.play(self.clickSound)
-                        self.pauseScreen()
-                        return True
-            pause.render()
+            if(connect == False):
+                self.waitScreen()
+                connect = True
             self.board.showBoard()
+            if (self.board.turn == True and self.board.PLAYER == 1) or (self.board.turn == False and self.board.PLAYER == 2):
+               red.render()
+            else:
+               blue.render()
             if  self.board.checkWin() == 1:
                 self.winScreen("Player 1 win", RED)
                 play = False
@@ -175,12 +180,11 @@ class Game:
         shadow.set_alpha(200)
         self.screen.blit(shadow, (0, 0))
 
-    def pauseScreen(self):
-        """Màn hình tạm dừng"""
+    def waitScreen(self):
+        """Màn hình đợi kết nối"""
         pause = True
-        cont = TextButton(self.screen, "Tiếp tục", (W/2, H/3), 80, GOLD)
-        back = TextButton(self.screen, "Quay về", (W/2, H/2), 80, GOLD)
-        buttons = [cont, back]
+        cont = TextButton(self.screen, "Đang đợi kết nối...", (W/2, H/2), 80, GOLD)
+        buttons = [cont]
         while pause:
             for event in pg.event.get():
                 if event.type == QUIT:
@@ -192,17 +196,17 @@ class Game:
                         self.screen.fill(WHITE)
                         self.screen.blit(self.background, (0, 0))
                         return True
-                    elif back.click():
-                        pg.mixer.Sound.play(self.clickSound)
-                        self.started = False
-                        self.board.resetBoard()
-                        return False    
             self.screen.blit(self.background, (0, 0))
             self.board.showBoard()
             self.shadow()
             for b in buttons:
                 b.render()
             pg.display.flip()
+            if(self.board.waiting_connection() == True):
+                self.screen.fill(WHITE)
+                self.screen.blit(self.background, (0, 0))
+                return True
+            
     
     def winScreen(self, txt, color):
         """Màn hình thông báo người chiến thắng"""

@@ -22,11 +22,8 @@ class Client_Board:
         self.PLAYER = 2
         self.turn = False
 
-        HOST = "127.0.0.1"
-        PORT = 65432
+    
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.connect((HOST, PORT))
-        self.create_thread(self.receive_data)
 
     def drawRect(self, surface, pos, height, boardSize):
         """Vẽ đường viền cho board"""
@@ -87,6 +84,7 @@ class Client_Board:
                             send_data = '{},{},{},{}'.format(col, row, True, self.PLAYER).encode()
                             self.sock.send(send_data)
                             self.turn = False
+                        
     
     def DFS(self, start, finish, player):
         """Thuật toán tìm theo chiều sâu"""
@@ -132,6 +130,17 @@ class Client_Board:
                 self.turn = True
                 self.otherCapture(x, y, data[3])
             print(data)
+
+    def waiting_connection(self):
+        HOST = "127.0.0.1"
+        PORT = 65432
+        while True:
+            try:
+                self.sock.connect((HOST, PORT))
+                self.create_thread(self.receive_data)
+                return True
+            except Exception as e:
+                pass
 
     def otherCapture(self, x, y, player):
         self.coordinate[int(x)][int(y)].captured(int(player))
