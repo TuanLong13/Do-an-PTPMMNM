@@ -1,13 +1,14 @@
 from collections import deque
+import tkinter
+from tkinter import Tk
 import pygame as pg
 from const import *
 from Hexagon import *   
-
 import socket
 import threading
+import const
 
-connection_established = False
-class Server_Board:
+class Client1_Board:
     def __init__(self, surface, size):
         self.surface = surface
         self.TILES = size
@@ -22,9 +23,11 @@ class Server_Board:
         self.blueBorder = []
         self.PLAYER = 1
         self.turn = True
+        self.player1 = "player1"
+        self.player2 = "player2"
 
+    
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.conn, self.addr = (0, 0)
 
     def drawRect(self, surface, pos, height, boardSize):
         """Vẽ đường viền cho board"""
@@ -51,6 +54,7 @@ class Server_Board:
         """Reset trạng thái board"""
         for hexagon in self.listHexagon:
             hexagon.state = 0
+        self.sock.send(bytes("{P1}", "utf8"))
         self.sock.close()
 
     def showBoard(self):
@@ -63,7 +67,7 @@ class Server_Board:
                     self.coordinate[col][row].fillHexagon(self.surface, WHITE)
                     self.coordinate[col][row].render(self.surface)
                     if self.coordinate[col][row].inHexagon(pg.mouse.get_pos()):
-                        if self.PLAYER == 1 :
+                        if self.PLAYER == 1:
                             self.coordinate[col][row].fillHexagon(self.surface, RED)
                             self.coordinate[col][row].render(self.surface)
                 elif self.coordinate[col][row].state == 1:
@@ -82,10 +86,11 @@ class Server_Board:
                         if self.PLAYER == 1:
                             pg.mixer.Sound.play(sound)
                             self.coordinate[col][row].captured(self.PLAYER)
-                            send_data = '{},{},{},{}'.format(col, row, True, self.PLAYER).encode()
-                            self.conn.send(send_data)
+                            send_data = '{},{},{},{},{}'.format('GAME',col, row, True, self.PLAYER).encode()
+                            self.sock.send(send_data)
                             self.turn = False
-
+                        
+    
     def DFS(self, start, finish, player):
         """Thuật toán tìm theo chiều sâu"""
         stack = deque()
@@ -114,33 +119,91 @@ class Server_Board:
                 if self.DFS(self.coordinate[col][0], self.blueBorder, 2):
                     return 2
         return 0
-    def create_thread(self,target):
+    
+    def create_thread(self, target):
         thread = threading.Thread(target=target)
         thread.daemon = True
         thread.start()
+
+    def receive_data(self):
+        while True:
+            message = self.sock.recv(1024).decode()
+            if( str(message).startswith("PLAYERNAME") ):
+                print(message)
+                data = message.split(",")
+                self.player1 = str(data[1])
+                self.player2 = str(data[2])
+            else:
+                if( str(message).startswith("GAME") ):
+                    data = message.split(",")
+                    x, y = (data[1], data[2])
+                    if(bool(data[3]) == True and int(data[4]) == 2):
+                        self.turn = True
+                        self.otherCapture(x, y, data[4])
+                        print(data)
+                else:
+                    try:
+                        print(message)
+                        self.msg_list.insert(tkinter.END, message)
+                    except:
+                        print('An error occurred!')
+                
+
+    def otherCapture(self, x, y, player):
+        self.coordinate[int(x)][int(y)].captured(int(player))
+
+
+                    #                           Chat room
+
     def waiting_connection(self):
         HOST = "127.0.0.1"
         PORT = 65432
         while True:
             try:
-                self.sock.bind((HOST, PORT))
-                self.sock.listen(1)
-                print("AAAAA")
-                self.conn, self.addr = self.sock.accept()
+                self.sock.connect((HOST, PORT))
                 self.create_thread(self.receive_data)
+                self.create_chat_UI()
                 return True
             except Exception as e:
                 pass
 
-    def receive_data(self):
-        while True:
-            data = self.conn.recv(1024).decode()
-            data = data.split(",")
-            x, y = (data[0], data[1])
-            if(bool(data[2]) == True):
-                self.turn = True
-                self.otherCapture(x, y, data[3])
-            print(data)
-    
-    def otherCapture(self, x, y, player):
-        self.coordinate[int(x)][int(y)].captured(int(player))
+    def create_chat_UI(self):    
+        self.top = Tk()
+        self.top.title("Phòng chat")
+
+        messages_frame = tkinter.Frame(self.top)
+        self.my_msg = tkinter.StringVar()  # For the messages to be sent.
+        self.my_msg.set("Nhập nickname của bạn")
+        
+        scrollbar = tkinter.Scrollbar(messages_frame)  # To see through previous messages.
+        # this will contain the messages. 
+        self.msg_list = tkinter.Listbox(messages_frame, height=15, width=50, yscrollcommand=scrollbar.set)
+        scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
+        self.msg_list.pack(side=tkinter.LEFT, fill=tkinter.BOTH)
+        self.msg_list.pack()
+        messages_frame.pack()
+
+        entry_field = tkinter.Entry(self.top, textvariable=self.my_msg)
+        entry_field.bind("<Return>", self.send)
+        entry_field.pack()
+
+        send_button = tkinter.Button(self.top, text="Gửi", command=self.send)
+        send_button.pack()
+
+        begin_button = tkinter.Button(self.top, text="Bắt đầu game", command=self.on_closing)
+        begin_button.pack()
+
+        self.top.protocol("WM_DELETE_WINDOW", self.on_closing)
+        tkinter.mainloop()  # for start of GUI  Interface
+        
+    def send(self, event=None):  # event is passed by binders.play
+        msg = self.my_msg.get()
+        self.my_msg.set("")  # Clears input field.
+        self.sock.send(bytes(msg, "utf8"))
+        if msg == "{quit}":
+            self.top.destroy()
+    def on_closing(self, event=None):
+        """This function is to be called when the window is closed."""
+        self.my_msg.set("{quit}")
+        self.send()
+   

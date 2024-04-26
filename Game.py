@@ -1,18 +1,21 @@
 import sys
+import time
 import pygame as pg
 from os import path
 from pygame.locals import QUIT
 from const import *
-from Server_Board import *
-from Client_Board import *
+from Client1_Board import *
+from Client2_Board import *
 from TextButton import *
 from PlayerTag import *
-
+from tkinter import Tk
 
 class Game:
     board = None
     tiles = 11
     def __init__(self, type):
+        root = Tk()
+        root.destroy()
         pg.init()
         pg.display.set_caption('Hex game')
         self.clock = pg.time.Clock()
@@ -26,7 +29,6 @@ class Game:
         self.started = False
 
         self.type = type
-        print(self.type)
         
     def startScreen(self):
         """Màn hình bắt đầu"""
@@ -49,12 +51,13 @@ class Game:
                         pg.mixer.Sound.play(self.clickSound)
                         self.started = True
                         start = False
-                        if(self.type == "server"):
-                            self.board = Server_Board(self.screen, self.tiles)
+                        if(self.type == "client1"):
+                            self.board = Client1_Board(self.screen, self.tiles)
                             self.board.createBoard()
                         else:
-                            self.board = Client_Board(self.screen, self.tiles)
+                            self.board = Client2_Board(self.screen, self.tiles)
                             self.board.createBoard()
+                        self.playScreen()
                         return True
                     elif rule.click():
                         pg.mixer.Sound.play(self.clickSound)
@@ -145,8 +148,6 @@ class Game:
         """Màn hình chơi"""
         play = True
         connect = False
-        red = PlayerTag(self.screen, "RED TURN", (W/15, H/15), 30, RED)
-        blue = PlayerTag(self.screen, "BLUE TURN", (W - W/8, H/15), 30, BLUE)
         while play:
             self.clock.tick(FPS)
             self.screen.fill(WHITE)
@@ -159,6 +160,9 @@ class Game:
                     self.board.capture(self.clickSound)
             if(connect == False):
                 self.waitScreen()
+                time.sleep(2)
+                red = PlayerTag(self.screen, self.board.player1 + " TURN", (W/10, H/15), 30, RED)
+                blue = PlayerTag(self.screen, self.board.player2 + " TURN", (W/10, H/15), 30, BLUE)
                 connect = True
             self.board.showBoard()
             if (self.board.turn == True and self.board.PLAYER == 1) or (self.board.turn == False and self.board.PLAYER == 2):
@@ -166,10 +170,10 @@ class Game:
             else:
                blue.render()
             if  self.board.checkWin() == 1:
-                self.winScreen("Player 1 win", RED)
+                self.winScreen(str(self.board.player1) + " win", RED)
                 play = False
             if  self.board.checkWin() == 2:
-                self.winScreen("Player 2 win", BLUE)
+                self.winScreen(str(self.board.player2) + " win", BLUE)
                 play = False
             pg.display.flip()
         
@@ -183,7 +187,7 @@ class Game:
     def waitScreen(self):
         """Màn hình đợi kết nối"""
         pause = True
-        cont = TextButton(self.screen, "Đang đợi kết nối...", (W/2, H/2), 80, GOLD)
+        cont = TextButton(self.screen, "Đang đợi bắt đầu...", (W/2, H/2), 80, GOLD)
         buttons = [cont]
         while pause:
             for event in pg.event.get():
@@ -197,12 +201,11 @@ class Game:
                         self.screen.blit(self.background, (0, 0))
                         return True
             self.screen.blit(self.background, (0, 0))
-            self.board.showBoard()
             self.shadow()
             for b in buttons:
                 b.render()
             pg.display.flip()
-            if(self.board.waiting_connection() == True):
+            if( self.board.waiting_connection() == True):
                 self.screen.fill(WHITE)
                 self.screen.blit(self.background, (0, 0))
                 return True
@@ -233,4 +236,3 @@ class Game:
             winner.printText(80)
             back.render()
             pg.display.flip()
-        

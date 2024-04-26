@@ -1,8 +1,7 @@
 import pygame as pg
 from Game import *
 
-
-game = Game("server")
+game = Game("client2")
 while True:
     if not game.started:
         game.startScreen()
