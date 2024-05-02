@@ -51,13 +51,21 @@ def handle(client):
                 messages = f'{nickname}: ' + message
                 broadcast(messages.encode('utf-8'))
         else:
-            # Xử lý khi client rời khỏi phòng chat
-            broadcast(f"PLAYERNAME,{nicknames[0]},{nicknames[1]}".encode('utf-8'))
-            index = clients.index(client)
-            nickname = nicknames[index]
-            clients.remove(client)
-            players.append(client)
-            broadcast(f'{nickname} đã vào chơi!'.encode('utf-8'))
+            # Xử lý khi client muốn rời khỏi phòng chat
+            if( len(clients) == 2 or len(players) == 1 ):
+                broadcast(f"PLAYERNAME,{nicknames[0]},{nicknames[1]}".encode('utf-8'))
+                try:
+                    index = clients.index(client)
+                    nickname = nicknames[index]
+                    clients.remove(client)
+                    players.append(client)
+                    broadcast(f'{nickname} đã vào chơi!'.encode('utf-8'))
+                except:
+                    index = players.index(client)
+                    players.remove(players)
+            else:
+                print("Not enough client")
+                broadcast("Chưa đủ người chơi để bắt đầu".encode("utf-8"))
             
 
 # Hàm nhận kết nối từ client

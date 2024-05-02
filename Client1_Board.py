@@ -1,4 +1,5 @@
 from collections import deque
+from time import sleep
 import tkinter
 from tkinter import Tk
 import pygame as pg
@@ -200,7 +201,9 @@ class Client1_Board:
         msg = self.my_msg.get()
         self.my_msg.set("")  # Clears input field.
         self.sock.send(bytes(msg, "utf8"))
-        if msg == "{quit}":
+        sleep(0.1)
+        print(self.player1)
+        if msg == "{quit}" and self.player1 != "player1" and self.player2 != "player2":
             self.top.destroy()
     def on_closing(self, event=None):
         """This function is to be called when the window is closed."""
