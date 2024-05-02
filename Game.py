@@ -36,8 +36,8 @@ class Game:
         title = TextButton(self.screen, "HEX GAME", (W/2, H/4), 100, GOLD)
         startGame = TextButton(self.screen, "Bắt đầu chơi", (W/2, H/2), 60, WHITE)
         rule = TextButton(self.screen, "Luật chơi", (W/2, H - H/2 + 100), 60, RED)
-        setting = TextButton(self.screen, "Tuỳ chỉnh", (W/2, H - H/2 + 200), 60, BLUE)
-        buttons = [startGame, rule, setting]
+#        setting = TextButton(self.screen, "Tuỳ chỉnh", (W/2, H - H/2 + 200), 60, BLUE)
+        buttons = [startGame, rule]#, setting]
         while start:
             self.screen.fill(WHITE)
             self.screen.blit(self.background, (0, 0))
@@ -63,10 +63,10 @@ class Game:
                         pg.mixer.Sound.play(self.clickSound)
                         self.ruleScreen()
                         return True
-                    elif setting.click():
-                        pg.mixer.Sound.play(self.clickSound)
-                        self.settingScreen()
-                        return True
+ #                   elif setting.click():
+ #                       pg.mixer.Sound.play(self.clickSound)
+ #                       self.settingScreen()
+ #                       return True
             title.printText(100)
             for b in buttons:
                 b.render()
@@ -102,46 +102,46 @@ class Game:
             back.render()
             pg.display.flip()
     
-    def settingScreen(self):
-        """Màn hình tuỳ chỉnh"""
-        setting = True
-        title = TextButton(self.screen, "Tuỳ chỉnh", (W/2, H/5), 100, BLUE)
-        up = TextButton(self.screen, "^", (W/3, H/2-50), 100, GOLD)
-        down = TextButton(self.screen, "^", (W/3, H/2+50), 100, GOLD)
-        size = TextButton(self.screen, self.tiles, (W/2, H/2), 80, GOLD)
-        tile = TextButton(self.screen, "Ô", (W/2+100, H/2), 80, GOLD)
-        back = TextButton(self.screen, "Quay lại", (W/8, H - H/15), 60, WHITE)
-        button = [up, back]
-        text = [size, tile]
-        while setting:
-            self.clock.tick(FPS)
-            self.screen.fill(WHITE)
-            self.screen.blit(self.background, (0, 0))
-            for event in pg.event.get():
-                if event.type == QUIT:
-                    pg.quit()
-                    sys.exit()    
-                if event.type == pg.MOUSEBUTTONDOWN:
-                    if back.click():
-                        pg.mixer.Sound.play(self.clickSound)
-                        self.started = False
-                        setting = False
-                        return False
-                    elif up.click():
-                        pg.mixer.Sound.play(self.clickSound)
-                        self.tiles = min(14, self.tiles+1)
-                        size.text = self.tiles
-                    elif down.click():
-                        pg.mixer.Sound.play(self.clickSound)
-                        self.tiles = max(8, self.tiles-1)
-                        size.text = self.tiles
-            for b in button:
-                b.render()
-            down.renderFlip()
-            for t in text:
-                t.printText(80)
-            title.printText(100)
-            pg.display.flip()
+#    def settingScreen(self):
+#        """Màn hình tuỳ chỉnh"""
+#        setting = True
+#        title = TextButton(self.screen, "Tuỳ chỉnh", (W/2, H/5), 100, BLUE)
+#        up = TextButton(self.screen, "^", (W/3, H/2-50), 100, GOLD)
+#        down = TextButton(self.screen, "^", (W/3, H/2+50), 100, GOLD)
+#        size = TextButton(self.screen, self.tiles, (W/2, H/2), 80, GOLD)
+#        tile = TextButton(self.screen, "Ô", (W/2+100, H/2), 80, GOLD)
+#        back = TextButton(self.screen, "Quay lại", (W/8, H - H/15), 60, WHITE)
+#        button = [up, back]
+#        text = [size, tile]
+#        while setting:
+#            self.clock.tick(FPS)
+#            self.screen.fill(WHITE)
+#            self.screen.blit(self.background, (0, 0))
+#            for event in pg.event.get():
+#                if event.type == QUIT:
+#                    pg.quit()
+#                    sys.exit()    
+#                if event.type == pg.MOUSEBUTTONDOWN:
+#                    if back.click():
+#                        pg.mixer.Sound.play(self.clickSound)
+#                        self.started = False
+#                        setting = False
+#                        return False
+#                    elif up.click():
+#                        pg.mixer.Sound.play(self.clickSound)
+#                        self.tiles = min(14, self.tiles+1)
+#                        size.text = self.tiles
+#                    elif down.click():
+#                        pg.mixer.Sound.play(self.clickSound)
+#                        self.tiles = max(8, self.tiles-1)
+#                        size.text = self.tiles
+#            for b in button:
+#                b.render()
+#            down.renderFlip()
+#            for t in text:
+#                t.printText(80)
+#           title.printText(100)
+#            pg.display.flip()
 
 
     def playScreen(self):
