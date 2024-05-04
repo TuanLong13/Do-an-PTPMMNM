@@ -2,13 +2,13 @@
 
 Ứng dụng hỗ trò chơi trò chơi Hex trên 2 PC khác nhau sử dụng thư viện pygame và socket
 
-## Description
+## Giới thiệu
 
 Hex là một trò chơi bàn cờ chiến lược trừu tượng dành cho hai người chơi, trong đó người chơi cố gắng nối các mặt đối diện của một bảng hình thoi làm bằng các ô lục giác.
 Người chơi nào kết nối các ô thành 1 đường nối 1 viền có màu tương ứng với ô đến viền đối diện là người chiến thắng. Trò chơi không có kết quả hoà(xem thêm tại [Wikipedia](https://en.wikipedia.org/wiki/Hex_(board_game)))
 
 ![image](https://github.com/TuanLong13/Do-an-PTPMMNM/assets/117003006/f990bfb0-f0f5-446c-be58-8408c599f0f1)
-## Getting Started
+## Hướng dẫn thực hiện
 
 ### Yêu cầu
 
@@ -16,14 +16,14 @@ Người chơi nào kết nối các ô thành 1 đường nối 1 viền có m�
 * Đã cài đặt Python3 và thư viện pygame
 * 2 máy riêng biệt(có thể sử dụng máy ảo)
 
-### Installing
+### Cài đặt
 
 * Clone repository
 ```
 git clone https://github.com/TuanLong13/Do-an-PTPMMNM.git
 ```
 hoặc download file zip về và giải nén
-### Executing program
+### Thự thi
 
 #### Lưu ý trước khi thực thi: 
 * Các lệnh thực hiện dưới đây chỉ là ví dụ
