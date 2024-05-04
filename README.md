@@ -1,3 +1,4 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # Hex Game
 
 Ứng dụng hỗ trò chơi trò chơi Hex trên 2 PC khác nhau sử dụng thư viện pygame và socket
