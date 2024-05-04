@@ -26,6 +26,7 @@ class Client2_Board:
         self.turn = False
         self.player1 = "player1"
         self.player2 = "player2"
+        self.interupt = False # Biến gián đoạn cuộc chơi 
     
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -128,7 +129,15 @@ class Client2_Board:
     def receive_data(self):
         while True:
             message = self.sock.recv(1024).decode()
-            if( str(message).startswith("PLAYERNAME") ):
+            print(message)
+            if( str(message).startswith("{back}") ):
+                self.interupt = True
+                break
+            elif( str(message).startswith("{start}") ):
+                self.begin_button["state"] = "normal"
+            elif( str(message).startswith("{quit}") ):
+                self.begin_button["state"] = "disabled"
+            elif( str(message).startswith("PLAYERNAME") ):
                 print(message)
                 data = message.split(",")
                 self.player1 = str(data[1])
@@ -155,8 +164,8 @@ class Client2_Board:
         #                             Chat room
 
     def waiting_connection(self):
-        HOST = "127.0.0.1"
-        PORT = 65432
+        HOST = "0.0.0.0"
+        PORT = 5000
         while True:
             try:
                 self.sock.connect((HOST, PORT))
@@ -187,8 +196,9 @@ class Client2_Board:
         send_button = tkinter.Button(self.top, text="Gửi", command=self.send)
         send_button.pack()
 
-        begin_button = tkinter.Button(self.top, text="Bắt đầu game", command=self.on_closing)
-        begin_button.pack()
+        self.begin_button = tkinter.Button(self.top, text="Bắt đầu game", command=self.on_closing)
+        self.begin_button.pack()
+        self.begin_button["state"] = "disabled"
 
         self.top.protocol("WM_DELETE_WINDOW", self.on_closing)
         tkinter.mainloop()  # for start of GUI  Interface
@@ -197,11 +207,13 @@ class Client2_Board:
         msg = self.my_msg.get()
         self.my_msg.set("")  # Clears input field.
         self.sock.send(bytes(msg, "utf8"))
-        sleep(0.1)
-        if msg == "{quit}" and self.player1 != "player1" and self.player2 != "player2":
+        if msg == "{quit}":
             self.top.destroy()
     def on_closing(self, event=None):
         """This function is to be called when the window is closed."""
         self.my_msg.set("{quit}")
         self.send()
+    def quit_game(self):
+        self.sock.send("{quit}".encode("utf-8"))
+        self.resetBoard()
    

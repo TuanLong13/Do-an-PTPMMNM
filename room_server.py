@@ -2,9 +2,9 @@ import socket
 import threading
 import time
 
-host = '127.0.0.1'
+host = '0.0.0.0'
 
-port = 65432
+port = 5000
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((host, port))
@@ -35,37 +35,32 @@ def handle(client):
                 gamebroadcast(message.encode('utf-8'))
             elif( str(message).startswith("{P1}")):
                 print("Player 1 left the game")
-                index = players.index(client)
-                nickname = nicknames[index]
-                players.remove(client)
-                nicknames.remove(nickname)
             elif( str(message).startswith("{P2}")):
                 print("Player 2 left the game")
-                index = players.index(client)
-                nickname = nicknames[index]
-                players.remove(client)
-                nicknames.remove(nickname)
             else:
                 index = clients.index(client)
                 nickname = nicknames[index]
                 messages = f'{nickname}: ' + message
                 broadcast(messages.encode('utf-8'))
         else:
-            # Xử lý khi client muốn rời khỏi phòng chat
-            if( len(clients) == 2 or len(players) == 1 ):
-                broadcast(f"PLAYERNAME,{nicknames[0]},{nicknames[1]}".encode('utf-8'))
-                try:
-                    index = clients.index(client)
-                    nickname = nicknames[index]
-                    clients.remove(client)
-                    players.append(client)
-                    broadcast(f'{nickname} đã vào chơi!'.encode('utf-8'))
-                except:
-                    index = players.index(client)
-                    players.remove(players)
-            else:
-                print("Not enough client")
-                broadcast("Chưa đủ người chơi để bắt đầu".encode("utf-8"))
+            # Xử lý khi client muốn rời khỏi phòng
+            try:
+                index = clients.index(client)
+                nickname = nicknames[index]
+                clients.remove(client)
+                players.append(client)
+                broadcast(f'{nickname} đã vào chơi!'.encode('utf-8'))
+            except ValueError as e:
+                index = players.index(client)
+                nickname = nicknames[index]
+                players.remove(client)
+                broadcast(f'{nickname} đã thoát!'.encode('utf-8'))
+                time.sleep(0.01)
+                broadcast("{quit}".encode("utf-8"))
+                if( len(players) == 1 ):
+                    print("aaaaaaaa")
+                    (players.pop()).send("{back}".encode("utf-8"))
+
             
 
 # Hàm nhận kết nối từ client
@@ -80,6 +75,10 @@ def receive():
         broadcast(f'{nickname} joined the chat!'.encode('utf-8'))
         thread = threading.Thread(target=handle, args=(client,))
         thread.start()
+        if( len(clients) == 2 ):
+            broadcast(f"PLAYERNAME,{nicknames[0]},{nicknames[1]}".encode('utf-8'))
+            time.sleep(0.01)
+            broadcast("{start}".encode("utf-8"))
 
 # Khởi động server
 print('Server is listening...')
