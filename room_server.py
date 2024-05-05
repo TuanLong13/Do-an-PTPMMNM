@@ -58,7 +58,6 @@ def handle(client):
                 time.sleep(0.01)
                 broadcast("{quit}".encode("utf-8"))
                 if( len(players) == 1 ):
-                    print("aaaaaaaa")
                     (players.pop()).send("{back}".encode("utf-8"))
 
             

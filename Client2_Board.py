@@ -129,7 +129,6 @@ class Client2_Board:
     def receive_data(self):
         while True:
             message = self.sock.recv(1024).decode()
-            print(message)
             if( str(message).startswith("{back}") ):
                 self.interupt = True
                 break
@@ -138,7 +137,6 @@ class Client2_Board:
             elif( str(message).startswith("{quit}") ):
                 self.begin_button["state"] = "disabled"
             elif( str(message).startswith("PLAYERNAME") ):
-                print(message)
                 data = message.split(",")
                 self.player1 = str(data[1])
                 self.player2 = str(data[2])
@@ -149,10 +147,8 @@ class Client2_Board:
                     if(bool(data[3]) == True and int(data[4]) == 1):
                         self.turn = True
                         self.otherCapture(x, y, data[4])
-                        print(data)
                 else:
                     try:
-                        print(message)
                         self.msg_list.insert(tkinter.END, message)
                     except:
                         print('An error occurred!')
