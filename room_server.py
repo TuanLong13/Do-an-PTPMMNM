@@ -76,6 +76,7 @@ def receive():
         thread = threading.Thread(target=handle, args=(client,))
         thread.start()
         if( len(clients) == 2 ):
+            time.sleep(0.01)
             broadcast(f"PLAYERNAME,{nicknames[0]},{nicknames[1]}".encode('utf-8'))
             time.sleep(0.01)
             broadcast("{start}".encode("utf-8"))
