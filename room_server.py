@@ -2,8 +2,7 @@ import socket
 import threading
 import time
 
-host = '0.0.0.0'
-
+host = ''
 port = 5000
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -13,7 +12,6 @@ server.listen(2)
 clients = []
 nicknames = []
 players = []
-sendname = True
 
 def broadcast(message):
     for client in clients:
