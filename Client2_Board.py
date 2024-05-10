@@ -161,6 +161,7 @@ class Client2_Board:
 
     def waiting_connection(self):
         HOST = '0.0.0.0'
+        print(HOST)
         PORT = 50000
         while True:
             try:

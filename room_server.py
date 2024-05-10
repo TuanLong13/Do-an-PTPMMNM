@@ -33,8 +33,10 @@ def handle(client):
                 gamebroadcast(message.encode('utf-8'))
             elif( str(message).startswith("{P1}")):
                 print("Player 1 left the game")
+                break
             elif( str(message).startswith("{P2}")):
                 print("Player 2 left the game")
+                break
             else:
                 index = clients.index(client)
                 nickname = nicknames[index]
@@ -58,6 +60,7 @@ def handle(client):
                 broadcast("{quit}".encode("utf-8"))
                 if( len(players) == 1 ):
                     (players.pop()).send("{back}".encode("utf-8"))
+                break
 
             
 
