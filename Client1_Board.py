@@ -161,6 +161,7 @@ class Client1_Board:
 
     def waiting_connection(self):
         HOST = socket.gethostbyname_ex(socket.gethostname())[-1][-1]
+        print(HOST)
         PORT = 5000
         while True:
             try:
