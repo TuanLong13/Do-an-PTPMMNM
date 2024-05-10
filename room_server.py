@@ -2,7 +2,7 @@ import socket
 import threading
 import time
 
-host = "127.0.0.1"
+host = ''
 port = 50000
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -40,6 +40,7 @@ def handle(client):
                 nickname = nicknames[index]
                 messages = f'{nickname}: ' + message
                 broadcast(messages.encode('utf-8'))
+
         else:
             # Xử lý khi client muốn rời khỏi phòng
             try:

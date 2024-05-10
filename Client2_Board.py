@@ -160,8 +160,7 @@ class Client2_Board:
         #                             Chat room
 
     def waiting_connection(self):
-        HOST = "127.0.0.1"
-        print(HOST)
+        HOST = '0.0.0.0'
         PORT = 50000
         while True:
             try:
