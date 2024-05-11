@@ -26,10 +26,8 @@ def gamebroadcast(message):
 def handle(client):
     while True:
         message = client.recv(1024).decode()
-        print(message)
         if( message != "{quit}" ):
             if( str(message).startswith("GAME") ):
-                print(message)
                 gamebroadcast(message.encode('utf-8'))
             elif( str(message).startswith("{P1}")):
                 print("Player 1 left the game")
