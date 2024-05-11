@@ -38,8 +38,10 @@ hoặc download file zip về và giải nén
 2. Nhập lệnh: ```netsh interface ipv4 show config``` để hiển thị toàn bô thông tin IP:
 ![image](https://static1.howtogeekimages.com/wordpress/wp-content/uploads/2023/09/netsh-showing-ipv45-wifi.png)
 3. Nhập lệnh: ```netsh interface ipv4 set address name="InterfaceName" static 192.168.2.14 255.255.255.0 DefaultGateway```
-với InterfaceName: có thể là "Wi-Fi" hoặc "Ethernet"
-    DefaultGateway: cùng chỉ số Default Gateway ở vị trí như hình trên
+   
+    ** InterfaceName: có thể là "Wi-Fi" hoặc "Ethernet"
+   
+    ** DefaultGateway: cùng chỉ số Default Gateway ở vị trí như hình trên
 * MACOS
 1. Mở cửa sổ Terminal và thực hiện lệnh sau:
 ```
