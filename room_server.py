@@ -3,7 +3,7 @@ import threading
 import time
 
 host = ''
-port = 50000
+port = 5000
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((host, port))
