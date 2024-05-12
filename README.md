@@ -78,4 +78,6 @@ python3 Do-an-PTPMMNM/client2.py
   
 **Lưu ý: nếu nhấn nút "Bắt đầu chơi" trong khi server không chạy sẽ gây đứng ứng dụng. Khi xảy thì chỉ cần force quit ứng dụng và thực hiện lại từ đầu**
 
+## License
 
+This project is licensed under the MIT License
