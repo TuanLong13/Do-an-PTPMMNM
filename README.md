@@ -1,4 +1,4 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![python](https://img.shields.io/badge/Python-3.12-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
 # Hex Game
 
 Ứng dụng hỗ trò chơi trò chơi Hex trên 2 PC khác nhau sử dụng thư viện pygame và socket
@@ -13,44 +13,71 @@ Người chơi nào kết nối các ô thành 1 đường nối 1 viền có m�
 
 ### Yêu cầu
 
-* Chạy được trên các hệ điều hành Windows, MacOS, Linux...(Đối với hệ điều hành Windows đôi khi phải được firewall cho phép mới có thể chạy)
-* Đã cài đặt Python3 và thư viện pygame
-* 2 máy riêng biệt(có thể sử dụng máy ảo)
+* 2 máy khác nhau
 
 ### Cài đặt
+* Cài đặt python3.12.3
+  
+Truy cập đường dẫn [python.org](https://www.python.org/downloads/release/python-3123/) và download phiên bản tương ứng với OS của từng máy
 
+* Cài đặt pygame
+```
+pip install pygame
+```
 * Clone repository
 ```
 git clone https://github.com/TuanLong13/Do-an-PTPMMNM.git
 ```
 hoặc download file zip về và giải nén
-### Thự thi
+### Thực thi
 
-#### Lưu ý trước khi thực thi: 
-* Các lệnh thực hiện dưới đây chỉ là ví dụ
-* Thư mục chứa python3 có thể khác nhau ở mỗi máy và đường dẫn đến thư mục của ứng dụng phụ thuộc vào vị trí cài đặt
+#### Config IP của máy chạy server
+Ở máy chạy server thực hiện:
+* Windows
+1. Mở cửa sổ Terminal dưới quyền admin
+2. Nhập lệnh: ```netsh interface ipv4 show config``` để hiển thị toàn bô thông tin IP:
+![image](https://static1.howtogeekimages.com/wordpress/wp-content/uploads/2023/09/netsh-showing-ipv45-wifi.png)
+3. Nhập lệnh: ```netsh interface ipv4 set address name="InterfaceName" static 192.168.2.14 255.255.255.0 DefaultGateway```
+   
+    ** InterfaceName: có thể là "Wi-Fi" hoặc "Ethernet"
+   
+    ** DefaultGateway: cùng chỉ số Default Gateway ở vị trí như hình trên
+* MACOS
+1. Mở cửa sổ Terminal và thực hiện lệnh sau:
+```
+sudo ipconfig set en1 INFORM 192.168.2.14
+```
+* Linux
+1. Mở cửa số Terminal và thực hiện lệnh: ```ifconfig -a``` để hiển thị toàn bô thông tin IP
+2. Nhập lệnh: ```sudo ifconfig interface down``` với interface là ten interface đã chọn
+![image](https://linuxier.com/wp-content/uploads/2023/06/disabling-network-interface-1024x697.jpg)
+3. Nhập lệnh:
+```
+sudo ifconfig interface 192.168.2.14 netmask 255.255.255.0 up
+```
 
-#### Các bước thực hiện
-* Đối với máy thứ nhất(máy này sẽ host server)
-  1. Mở cửa sổ Terminal.
+#### Đối với máy thứ nhất(máy này sẽ host server)
+  1. Mở cửa sổ Terminal
   2. Chạy lệnh sau để host server
 ```
-/usr/local/bin/python3 ~/Downloads/Do-an-PTPMMNM/room_server.py
+python3 room_server.py
 ```
   3. Khi server đã chạy, mở thêm 1 cửa số terminal mới
   4. Chạy lệnh sau để hiển thị giao diện(
 ```
-/usr/local/bin/python3 ~/Downloads/Do-an-PTPMMNM/client1.py
+python3 Do-an-PTPMMNM/client1.py
 ```
 
-* Đối với máy thứ 2
+#### Đối với máy thứ 2
   1. Mở cửa sổ Terminal.
   2. Chạy lệnh sau để hiển thị giao diện
 ```
-/usr/local/bin/python3 ~/Downloads/Do-an-PTPMMNM/client2.py
+python3 Do-an-PTPMMNM/client2.py
 ```
-* Nhấn vào nút "Bắt đầu chơi" trên giao diện ở cả 2 máy để mở cửa sổ chat chuẩn bị vào chơi
+#### Nhấn vào nút "Bắt đầu chơi" trên giao diện ở cả 2 máy để mở cửa sổ chat chuẩn bị vào chơi
   
 **Lưu ý: nếu nhấn nút "Bắt đầu chơi" trong khi server không chạy sẽ gây đứng ứng dụng. Khi xảy thì chỉ cần force quit ứng dụng và thực hiện lại từ đầu**
 
+## License
 
+This project is licensed under the MIT License
