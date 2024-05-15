@@ -36,8 +36,10 @@ hoặc download file zip về và giải nén
 * Windows
 1. Mở cửa sổ Terminal dưới quyền admin
 2. Nhập lệnh: ```netsh interface ipv4 show config``` để hiển thị toàn bô thông tin IP:
+   
 ![image](https://static1.howtogeekimages.com/wordpress/wp-content/uploads/2023/09/netsh-showing-ipv45-wifi.png)
-3. Nhập lệnh: ```netsh interface ipv4 set address name="InterfaceName" static 192.168.2.14 255.255.255.0 DefaultGateway```
+
+4. Nhập lệnh: ```netsh interface ipv4 set address name="InterfaceName" static 192.168.2.14 255.255.255.0 DefaultGateway```
    
     ** InterfaceName: có thể là "Wi-Fi" hoặc "Ethernet"
    
@@ -56,6 +58,7 @@ sudo ipconfig set en1 INFORM 192.168.2.14
 sudo ifconfig interface 192.168.2.14 netmask 255.255.255.0 up
 ```
 
+### Sau khi config IP thành công
 #### Đối với máy thứ nhất(máy này sẽ host server)
   1. Mở cửa sổ Terminal
   2. Chạy lệnh sau để host server
@@ -65,14 +68,14 @@ python3 room_server.py
   3. Khi server đã chạy, mở thêm 1 cửa số terminal mới
   4. Chạy lệnh sau để hiển thị giao diện(
 ```
-python3 Do-an-PTPMMNM/client1.py
+python3 Do-an-PTPMMNM/client1.py
 ```
 
 #### Đối với máy thứ 2
   1. Mở cửa sổ Terminal.
   2. Chạy lệnh sau để hiển thị giao diện
 ```
-python3 Do-an-PTPMMNM/client2.py
+python3 Do-an-PTPMMNM/client2.py
 ```
 #### Nhấn vào nút "Bắt đầu chơi" trên giao diện ở cả 2 máy để mở cửa sổ chat chuẩn bị vào chơi
   
