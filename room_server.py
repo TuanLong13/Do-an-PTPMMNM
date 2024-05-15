@@ -2,7 +2,7 @@ import socket
 import threading
 import time
 
-host = ''
+host = '192.168.2.14'
 port = 5000
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -24,6 +24,7 @@ def gamebroadcast(message):
         player.send(message)
 
 def handle(client):
+    global nicknames
     while True:
         message = client.recv(1024).decode()
         if( message != "{quit}" ):
@@ -58,6 +59,7 @@ def handle(client):
                 broadcast("{quit}".encode("utf-8"))
                 if( len(players) == 1 ):
                     (players.pop()).send("{back}".encode("utf-8"))
+                    nicknames = []
                 break
 
             
