@@ -1,5 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![python](https://img.shields.io/badge/Python-3.12-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
-# Hex Game
+# HexConnect
 
 Ứng dụng hỗ trợ chơi trò chơi Hex trên 2 PC khác nhau sử dụng thư viện pygame và socket
 
@@ -26,7 +26,7 @@ pip install pygame
 ```
 * Clone repository
 ```
-git clone https://github.com/TuanLong13/Do-an-PTPMMNM.git
+git clone https://github.com/TuanLong13/HexConnect.git
 ```
 hoặc download file zip về và giải nén
 ### Thực thi
@@ -68,14 +68,14 @@ python3 room_server.py
   3. Khi server đã chạy, mở thêm 1 cửa số terminal mới
   4. Chạy lệnh sau để hiển thị giao diện(
 ```
-python3 Do-an-PTPMMNM/client1.py
+python3 HexConnect/client1.py
 ```
 
 #### Đối với máy thứ 2
   1. Mở cửa sổ Terminal.
   2. Chạy lệnh sau để hiển thị giao diện
 ```
-python3 Do-an-PTPMMNM/client2.py
+python3 HexConnect/client2.py
 ```
 #### Nhấn vào nút "Bắt đầu chơi" trên giao diện ở cả 2 máy để mở cửa sổ chat chuẩn bị vào chơi
   
