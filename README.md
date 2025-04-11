@@ -1,7 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![python](https://img.shields.io/badge/Python-3.12-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
 # Hex Game
 
-Ứng dụng hỗ trò chơi trò chơi Hex trên 2 PC khác nhau sử dụng thư viện pygame và socket
+Ứng dụng hỗ trợ chơi trò chơi Hex trên 2 PC khác nhau sử dụng thư viện pygame và socket
 
 ## Giới thiệu
 
